@@ -1,5 +1,6 @@
 package camping.controller;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import camping.model.Activity;
 import camping.model.Client;
 import camping.model.Stay;
 import service.ClientService;
@@ -31,7 +33,13 @@ public class StayController {
 	
 	@RequestMapping(value="/stays/view/{stayId}", method = RequestMethod.GET)
 	public String show(@PathVariable("stayId") int stayId, Model model) {
-		model.addAttribute("content", "Client " + stayId);
+		StayService ss = StayService.getInstance();
+		Stay s = ss.getStay(stayId);
+		
+		List<Activity> activities = ss.getActivitiesByStay(stayId);
+		
+		model.addAttribute("activities", activities);
+		model.addAttribute("stay", s);
 		return "stays_view";
 	}
 	
@@ -75,17 +83,24 @@ public class StayController {
 	}
 	
 	@RequestMapping(value="/stays/invoice/{stayId}", method = RequestMethod.GET)
-	public ModelAndView invoice(@PathVariable("stayId") int stayId, Model model) {
-		ModelAndView modelAndView = new ModelAndView("invoicePdf", "command", "hello");
-		  
-		return modelAndView;
+	public String invoice(@PathVariable("stayId") int stayId, Model model) {
+		StayService ss = StayService.getInstance();
+		Stay stay = ss.getStay(stayId);
+		
+		model.addAttribute("stay", stay);
+		return "invoicePdf";
 	}
 	
 	@RequestMapping(value="/stays/invoiceSports/{stayId}", method = RequestMethod.GET)
-	public ModelAndView invoiceSports(@PathVariable("stayId") int stayId, Model model) {
-		ModelAndView modelAndView = new ModelAndView("invoiceSportsPdf", "command", "hello");
-		  
-		return modelAndView;
+	public String invoiceSports(@PathVariable("stayId") int stayId, Model model) {
+		StayService ss = StayService.getInstance();
+		Stay stay = ss.getStay(stayId);
+		
+		List<Activity> activities = ss.getActivitiesByStay(stayId);
+		
+		model.addAttribute("activities", activities);		
+		model.addAttribute("stay", stay);
+		return "invoiceSportsPdf";
 	}
 
 }

@@ -34,8 +34,8 @@
 					<tr>
 						<td>${stay.id}</td>
 						<td>${stay.client.name}</td>
-						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.startDate}" />
-						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.endDate}" />
+						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.startDate}" /></td>
+						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.endDate}" /></td>
 						<td class="right aligned">
 							<div class="ui tiny buttons">
 								<a href="<c:url value='/stays/view/${stay.id}'/>" class="ui green button">Voir</a>

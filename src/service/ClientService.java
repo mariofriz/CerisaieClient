@@ -52,7 +52,12 @@ public class ClientService {
 	}
 	
 	public Client getClient(int id) {
-		return null;
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "http://localhost:8080/ProjetRestTomcat/client/getclient";
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("numcli", id);
+		Client client = restTemplate.getForObject(builder.build().encode().toUri().toString(), Client.class);	
+		
+		return client;
 	}
 	
 	public void storeClient(Client client) {
@@ -82,8 +87,7 @@ public class ClientService {
 	public void deleteClient(int id) {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://localhost:8080/ProjetRestTomcat/client/deleteclient";
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-				.queryParam("numCli", id);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url).queryParam("numCli", id);
 		String value = restTemplate.getForObject(builder.build().encode().toUri().toString(), String.class, id);
 	}
 

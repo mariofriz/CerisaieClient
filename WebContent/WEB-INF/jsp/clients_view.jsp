@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:import url="head.jsp" />
 <body>
 	<div class="container">
@@ -14,12 +15,12 @@
 		</h2>
 
 		<div class="ui segment attached">
-			<p><b>Numéro :</b></p>
-			<p><b>Nom :</b></p>
-			<p><b>Adresse :</b></p>
-			<p><b>Code Postal / Ville:</b></p>
-			<p><b>Type Piece :</b></p>
-			<p><b>Numéro Piece :</b></p>
+			<p><b>Numéro : </b>${client.id}</p>
+			<p><b>Nom : </b>${client.name}</p>
+			<p><b>Adresse : </b>${client.address}</p>
+			<p><b>Code Postal / Ville : </b>${client.zipCode} ${client.city}</p>
+			<p><b>Type Piece : </b>${client.typeIdentity}</p>
+			<p><b>Numéro Piece : </b>${client.numIdentity}</p>
 			
 			<p><b>Séjours :</b></p>			
 			<table class="ui table">
@@ -33,13 +34,15 @@
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="stay" items="${stays}">
 					<tr>
-						<td>September 10, 2013</td>
-						<td>September 14, 2013</td>
-						<td>3</td>
-						<td>15</td>
-						<td><a href="<c:url value='/stays/view/1'/>" class="ui blue basic button">Voir</a></td>
+						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.startDate}" /></td>
+						<td><fmt:formatDate type='date' dateStyle="short" value="${stay.endDate}" /></td>
+						<td>${stay.numberPersons}</td>
+						<td>${stay.location.typeLocation.price}</td>
+						<td><a href="<c:url value='/stays/view/${stay.id}'/>" class="ui blue basic button">Voir</a></td>
 					</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import camping.model.Client;
+import camping.model.Stay;
 import service.ClientService;
+import service.StayService;
 
 @Controller
 public class ClientController {
@@ -29,9 +31,13 @@ public class ClientController {
 	@RequestMapping(value="/clients/view/{clientId}", method = RequestMethod.GET)
 	public String show(@PathVariable("clientId") int clientId, Model model) {
 		ClientService cs = ClientService.getInstance();
-		//Client c = cs.getClient(clientId);
-
-		model.addAttribute("content", "Client " + clientId);
+		Client c = cs.getClient(clientId);
+		
+		StayService ss = StayService.getInstance();
+		List<Stay> stays = ss.getStaysByClient(clientId);
+		
+		model.addAttribute("stays", stays);
+		model.addAttribute("client", c);
 		return "clients_view";
 	}
 	
